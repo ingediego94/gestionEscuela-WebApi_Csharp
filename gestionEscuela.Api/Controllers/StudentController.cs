@@ -42,12 +42,23 @@ public class StudentController : ControllerBase
     
     //CREATE
     [HttpPost("create")]
-    public async Task<IActionResult> Create([FromBody] Student student)
+    public async Task<IActionResult> Create([FromBody] StudentCreateUpdateDto studentDto)
     {
         if (!ModelState.IsValid)
             return BadRequest(ModelState);
 
+        var student = new Student
+        {
+            Name = studentDto.Name,
+            DocuNumber = studentDto.DocNumber,
+            Email = studentDto.Email,
+            Phone = studentDto.Phone,
+            StudentCode = studentDto.StudentCode,
+            Grade = studentDto.Grade
+        };
+        
         var createdStudent = await _studentService.CreateAsync(student);
+        
         return CreatedAtAction(nameof(GetById), new { id = createdStudent.Id }, createdStudent);
     }
     
