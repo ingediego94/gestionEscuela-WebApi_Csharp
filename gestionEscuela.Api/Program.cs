@@ -12,7 +12,8 @@ builder.Services.AddInfrastructure(builder.Configuration);
 builder.Services.AddControllers();
 
 builder.Services.AddScoped<IStudentRepository, StudentRepository>();
-builder.Services.AddScoped<StudentService>(); 
+builder.Services.AddScoped<StudentService>();
+
 
 
 //----------------------------------------------------
