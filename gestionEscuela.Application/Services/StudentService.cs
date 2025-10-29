@@ -13,9 +13,9 @@ public class StudentService : IStudentRepository
     }
 
 
-    public Task<Student?> GetByIdAsync(int id)
+    public async Task<Student?> GetByIdAsync(int id)
     {
-        throw new NotImplementedException();
+        return await _studentRepository.GetByIdAsync(id);
     }
 
     public Task<IEnumerable<Student>> GetAllAsync()

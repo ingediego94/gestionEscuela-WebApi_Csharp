@@ -1,6 +1,7 @@
 using gestionEscuela.Domain.Entities;
 using gestionEscuela.Domain.Repositories;
 using gestionEscuela.Infrastructure.Data;
+using Microsoft.EntityFrameworkCore;
 
 namespace gestionEscuela.Infrastructure.Repositories;
 
@@ -14,9 +15,11 @@ public class StudentRepository : IStudentRepository
     }
 
     // Interfaces to implement
-    public Task<Student?> GetByIdAsync(int id)
+    
+    // GET BY ID:
+    public async Task<Student?> GetByIdAsync(int id)
     {
-        throw new NotImplementedException();
+        return await _context.students_tb.FirstOrDefaultAsync(c => c.Id == id);
     }
 
     public Task<IEnumerable<Student>> GetAllAsync()

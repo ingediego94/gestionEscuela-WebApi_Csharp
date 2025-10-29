@@ -1,11 +1,18 @@
+using gestionEscuela.Domain.Repositories;
 using gestionEscuela.Infrastructure.Extensions;
+using gestionEscuela.Infrastructure.Repositories;
+using gestionEscuela.Application.Services;
 
 var builder = WebApplication.CreateBuilder(args);
 //----------------------------------------------------
 // Dependency injection of db context:
 builder.Services.AddInfrastructure(builder.Configuration);
 
+// Other injections:
+builder.Services.AddControllers();
 
+builder.Services.AddScoped<IStudentRepository, StudentRepository>();
+builder.Services.AddScoped<StudentService>(); 
 
 
 //----------------------------------------------------
