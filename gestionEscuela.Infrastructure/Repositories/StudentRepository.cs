@@ -1,6 +1,7 @@
 using gestionEscuela.Domain.Entities;
 using gestionEscuela.Domain.Repositories;
 using gestionEscuela.Infrastructure.Data;
+using Microsoft.EntityFrameworkCore;
 
 namespace gestionEscuela.Infrastructure.Repositories;
 
@@ -13,18 +14,24 @@ public class StudentRepository : IStudentRepository
         _context = context;
     }
 
-    // Interfaces to implement
-    public Task<Student?> GetByIdAsync(int id)
+    // ------------------------------------------------------
+    // INTERFACES TO IMPLEMENT:
+    
+    // GET BY ID:
+    public async Task<Student?> GetByIdAsync(int id)
     {
-        throw new NotImplementedException();
+        return await _context.students_tb.FirstOrDefaultAsync(c => c.Id == id);
     }
 
-    public Task<IEnumerable<Student>> GetAllAsync()
+    
+    //GET ALL:
+    public async Task<IEnumerable<Student>> GetAllAsync()
     {
-        throw new NotImplementedException();
+        return await _context.students_tb.ToListAsync();
     }
+    
 
-    // Create:
+    // CREATE:
     public async Task<Student> CreateAsync(Student student)
     {
         try
@@ -40,13 +47,38 @@ public class StudentRepository : IStudentRepository
         }
     }
 
-    public Task<Student?> UpdateAsync(Student student)
+    
+    // UPDATE:
+    public async Task<Student?> UpdateAsync(Student student)
     {
-        throw new NotImplementedException();
+        var existing = await _context.students_tb.FindAsync(student.Id);
+
+        if (existing == null)
+            return null;
+
+        existing.Name = student.Name;
+        existing.DocuNumber = student.DocuNumber;
+        existing.Email = student.Name;
+        existing.StudentCode = student.StudentCode;
+        existing.Grade = student.Grade;
+
+        await _context.SaveChangesAsync();
+        return existing;
     }
 
-    public Task<bool> DeleteAsync(int id)
+    
+    //DELETE:
+    public async Task<bool> DeleteAsync(int id)
     {
-        throw new NotImplementedException();
+        var studentToDelete = await _context.students_tb.FindAsync(id);
+        
+        if (studentToDelete == null)
+            return false;
+        
+        _context.students_tb.Remove(studentToDelete);
+        await _context.SaveChangesAsync();
+        return true;
     }
+    
+
 }

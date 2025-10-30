@@ -3,7 +3,7 @@ using gestionEscuela.Domain.Repositories;
 
 namespace gestionEscuela.Application.Services;
 
-public class StudentService : IStudentRepository
+public class StudentService 
 {
     private readonly IStudentRepository _studentRepository;
 
@@ -12,32 +12,48 @@ public class StudentService : IStudentRepository
         _studentRepository = studentRepository;
     }
 
+    // -----------------------------------------------------------
 
-    public Task<Student?> GetByIdAsync(int id)
+    //GET BY ID:
+    public async Task<Student?> GetByIdAsync(int id)
     {
-        throw new NotImplementedException();
-    }
-
-    public Task<IEnumerable<Student>> GetAllAsync()
-    {
-        throw new NotImplementedException();
+        return await _studentRepository.GetByIdAsync(id);
     }
 
     
-    // Create
+    //GET ALL:
+    public async Task<IEnumerable<Student>> GetAllAsync()
+    {
+        return await _studentRepository.GetAllAsync();
+    }
+
+    
+    //CREATE:
     public async Task<Student> CreateAsync(Student student)
     {
         return await _studentRepository.CreateAsync(student);
     }
 
     
-    public Task<Student?> UpdateAsync(Student student)
+    //UPDATE:
+    public async Task<bool> UpdateAsync(Student student)
     {
-        throw new NotImplementedException();
+        var existing = await _studentRepository.GetByIdAsync(student.Id);
+        if (existing == null)
+            return false;
+
+        await _studentRepository.UpdateAsync(student);
+        return true;
     }
 
-    public Task<bool> DeleteAsync(int id)
+    
+    //DELETE:
+    public async Task<bool> DeleteAsync(int id)
     {
-        throw new NotImplementedException();
+        var existing = await _studentRepository.GetByIdAsync(id);
+        if (existing == null)
+            return false;
+
+        return await _studentRepository.DeleteAsync(id);
     }
 }
